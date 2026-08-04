@@ -1,0 +1,59 @@
+{
+  "name": "express-production-middleware",
+  "version": "1.1.0",
+  "description": "Production-ready Express middleware stack with security headers, rate limiting, and request logging",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/examples/with-all-middleware.ts",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "security",
+    "rate-limiter",
+    "logging",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/david-lad/express-production-middleware.git"
+  },
+  "bugs": {
+    "url": "https://github.com/david-lad/express-production-middleware/issues"
+  },
+  "homepage": "https://github.com/david-lad/express-production-middleware#readme",
+  "author": "david-lad",
+  "license": "MIT",
+  "peerDependencies": {
+    "express": "^4.18.0",
+    "express-rate-limit": "^7.0.0",
+    "ioredis": "^5.0.0",
+    "rate-limit-redis": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "ioredis": {
+      "optional": true
+    },
+    "rate-limit-redis": {
+      "optional": true
+    },
+    "express-rate-limit": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/ioredis": "^4.28.10",
+    "@types/node": "^18.15.0",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
