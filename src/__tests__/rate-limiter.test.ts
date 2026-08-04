@@ -6,7 +6,7 @@ import { createRateLimiter } from '../rate-limiter';
 
 describe('createRateLimiter', () => {
   const originalEnv = process.env.NODE_ENV;
-  let consoleSpy: ReturnType<typeof vi.spyOn>;
+  let consoleSpy: any;
 
   beforeEach(() => {
     consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});

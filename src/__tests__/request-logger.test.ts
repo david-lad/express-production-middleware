@@ -4,7 +4,7 @@ import request from 'supertest';
 import { requestLogger } from '../request-logger';
 
 describe('requestLogger', () => {
-  let consoleSpy: ReturnType<typeof vi.spyOn>;
+  let consoleSpy: any;
 
   beforeEach(() => {
     consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
@@ -21,8 +21,8 @@ describe('requestLogger', () => {
 
     await request(app).get('/test').expect(200);
 
-    const logCalls = consoleSpy.mock.calls.map(c => String(c[0]));
-    const hasRequestLog = logCalls.some(log => log.includes('GET') && log.includes('/test'));
+    const logCalls = consoleSpy.mock.calls.map((c: any) => String(c[0]));
+    const hasRequestLog = logCalls.some((log: string) => log.includes('GET') && log.includes('/test'));
     expect(hasRequestLog).toBe(false);
   });
 
@@ -34,8 +34,8 @@ describe('requestLogger', () => {
 
     await request(app).post('/test').send({ name: 'test' }).expect(200);
 
-    const logCalls = consoleSpy.mock.calls.map(c => String(c[0]));
-    const hasRequestLog = logCalls.some(log => log.includes('POST') && log.includes('/test'));
+    const logCalls = consoleSpy.mock.calls.map((c: any) => String(c[0]));
+    const hasRequestLog = logCalls.some((log: string) => log.includes('POST') && log.includes('/test'));
     expect(hasRequestLog).toBe(true);
   });
 
@@ -63,8 +63,8 @@ describe('requestLogger', () => {
 
     await request(app).post('/test').expect(200);
 
-    const logCalls = consoleSpy.mock.calls.map(c => String(c[0]));
-    const hasResponseLog = logCalls.some(log => log.includes('200') && log.includes('ms'));
+    const logCalls = consoleSpy.mock.calls.map((c: any) => String(c[0]));
+    const hasResponseLog = logCalls.some((log: string) => log.includes('200') && log.includes('ms'));
     expect(hasResponseLog).toBe(true);
   });
 
@@ -99,8 +99,8 @@ describe('requestLogger', () => {
 
     await request(app).get('/test').expect(200);
 
-    const logCalls = consoleSpy.mock.calls.map(c => String(c[0]));
-    const hasRequestLog = logCalls.some(log => log.includes('GET') && log.includes('/test'));
+    const logCalls = consoleSpy.mock.calls.map((c: any) => String(c[0]));
+    const hasRequestLog = logCalls.some((log: string) => log.includes('GET') && log.includes('/test'));
     expect(hasRequestLog).toBe(true);
   });
 });

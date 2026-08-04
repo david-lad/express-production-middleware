@@ -22,35 +22,34 @@ function mockReq(overrides: Partial<Request> = {}): Request {
 }
 
 function mockRes(): Response {
-  const headers: Record<string, string> = {};
-  const res = {
-    headers,
+  const mock: any = {
+    headers: {},
     statusCode: 200,
+    _jsonData: null,
     setHeader(name: string, value: string) {
-      headers[name] = value;
-      return res;
+      mock.headers[name] = value;
+      return mock;
     },
     removeHeader(name: string) {
-      delete headers[name];
-      return res;
+      delete mock.headers[name];
+      return mock;
     },
     getHeader(name: string) {
-      return headers[name];
+      return mock.headers[name];
     },
     status(code: number) {
-      res.statusCode = code;
-      return res;
+      mock.statusCode = code;
+      return mock;
     },
     json(data: any) {
-      res._jsonData = data;
-      return res;
+      mock._jsonData = data;
+      return mock;
     },
     end() {
-      return res;
+      return mock;
     },
-    _jsonData: null,
-  } as unknown as Response;
-  return res;
+  };
+  return mock;
 }
 
 describe('enforceHttps', () => {
