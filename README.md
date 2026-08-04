@@ -1,5 +1,7 @@
 # express-production-middleware
 
+[![npm](https://img.shields.io/npm/v/express-production-middleware)](https://www.npmjs.com/package/express-production-middleware)
+
 Production-ready Express middleware stack with security headers, rate limiting, and request logging. Project-agnostic — bring your own limiter names.
 
 ## Installation
