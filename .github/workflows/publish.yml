@@ -7,6 +7,11 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # This block allows GitHub to authenticate with npm without a token secret
+    permissions:
+      contents: read
+      id-token: write 
+      
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,4 +22,5 @@ jobs:
       - run: npm test
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # actions/setup-node automatically sets up authentication using the GITHUB_TOKEN when id-token is write
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
