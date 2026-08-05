@@ -7,20 +7,24 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    # This block allows GitHub to authenticate with npm without a token secret
     permissions:
       contents: read
       id-token: write 
       
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
+          registry-url: https://registry.npmjs.org # Required for setup-node authentication tracking
+
+      - name: Clear legacy project npmrc
+        # This deletes the repository's local .npmrc file so it doesn't conflict with npm 11
+        run: rm -f .npmrc 
+
       - run: npm ci --legacy-peer-deps
       - run: npm test
       - run: npm publish
         env:
-          # actions/setup-node automatically sets up authentication using the GITHUB_TOKEN when id-token is write
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
