@@ -23,7 +23,7 @@ jobs:
         # This deletes the repository's local .npmrc file so it doesn't conflict with npm 11
         run: rm -f .npmrc 
 
-      - run: npm ci --legacy-peer-deps
+      - run: npm install --legacy-peer-deps
       - run: npm test
       - run: npm publish
         env:
