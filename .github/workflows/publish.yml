@@ -12,19 +12,25 @@ jobs:
       id-token: write 
       
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
       
-      - uses: actions/setup-node@v4
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org # Required for setup-node authentication tracking
+          node-version: 22
+          registry-url: https://registry.npmjs.org
 
-      - name: Clear legacy project npmrc
-        # This deletes the repository's local .npmrc file so it doesn't conflict with npm 11
-        run: rm -f .npmrc 
+      - name: Install Project Dependencies
+        run: npm ci
 
-      - run: npm install --no-userconfig --legacy-peer-deps
-      - run: npm test
-      - run: npm publish
+      - name: Run test suites
+        run: npm test
+
+      - name: Upgrade npm & Publish via OIDC
+        # We upgrade the npm engine right here so Trusted Publishing has its OIDC handler
+        run: |
+          npm install -g npm@latest
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
