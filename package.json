@@ -4,7 +4,9 @@
   "description": "Production-ready Express middleware stack with security headers, rate limiting, and request logging",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/examples/with-all-middleware.ts",
@@ -21,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/david-lad/express-production-middleware.git"
+    "url": "git+https://github.com/david-lad/express-production-middleware.git"
   },
   "bugs": {
     "url": "https://github.com/david-lad/express-production-middleware/issues"
