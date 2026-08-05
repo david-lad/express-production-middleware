@@ -56,6 +56,35 @@ describe('requestLogger', () => {
     expect(logCalls).not.toContain('secret123');
   });
 
+  it('redacts falsy sensitive values from request body', async () => {
+    const app = express();
+    app.use(express.json());
+    app.use(requestLogger());
+    app.post('/test', (req, res) => res.json({ ok: true }));
+
+    await request(app)
+      .post('/test')
+      .send({ password: '', token: 0 })
+      .expect(200);
+
+    const logCalls = consoleSpy.mock.calls.flat().join(' ');
+    expect(logCalls).toContain('[REDACTED]');
+    expect(logCalls).not.toContain('token":0');
+  });
+
+  it('logs PATCH requests', async () => {
+    const app = express();
+    app.use(express.json());
+    app.use(requestLogger());
+    app.patch('/test', (req, res) => res.json({ ok: true }));
+
+    await request(app).patch('/test').send({ name: 'patch' }).expect(200);
+
+    const logCalls = consoleSpy.mock.calls.map((c: any) => String(c[0]));
+    const hasRequestLog = logCalls.some((log: string) => log.includes('PATCH') && log.includes('/test'));
+    expect(hasRequestLog).toBe(true);
+  });
+
   it('logs response status and duration', async () => {
     const app = express();
     app.use(requestLogger());

@@ -18,7 +18,7 @@ export function enforceHttps(req: Request, res: Response, next: NextFunction): v
   next();
 }
 
-export function securityHeaders(req: Request, res: Response, next: NextFunction): void {
+function applySecurityHeaders(req: Request, res: Response, hstsMaxAge?: number): void {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
@@ -29,9 +29,13 @@ export function securityHeaders(req: Request, res: Response, next: NextFunction)
   if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
     res.setHeader(
       'Strict-Transport-Security',
-      'max-age=31536000; includeSubDomains'
+      `max-age=${hstsMaxAge ?? 31536000}; includeSubDomains`
     );
   }
+}
+
+export function securityHeaders(req: Request, res: Response, next: NextFunction): void {
+  applySecurityHeaders(req, res);
 
   next();
 }
@@ -80,6 +84,7 @@ export function securityMiddleware(options: SecurityMiddlewareOptions = {}) {
     enableHttps = true,
     enableHeaders = true,
     enableCors = true,
+    hstsMaxAge,
     ...corsOptions
   } = options;
 
@@ -87,7 +92,12 @@ export function securityMiddleware(options: SecurityMiddlewareOptions = {}) {
     const middlewares: Array<(req: Request, res: Response, next: NextFunction) => void> = [];
 
     if (enableHttps) middlewares.push(enforceHttps);
-    if (enableHeaders) middlewares.push(securityHeaders);
+    if (enableHeaders) {
+      middlewares.push((request, response, proceed) => {
+        applySecurityHeaders(request, response, hstsMaxAge);
+        proceed();
+      });
+    }
     if (enableCors) middlewares.push(corsConfig(corsOptions));
 
     let index = 0;

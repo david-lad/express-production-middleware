@@ -142,6 +142,18 @@ describe('securityHeaders', () => {
     expect(res.getHeader('Strict-Transport-Security')).toBe('max-age=31536000; includeSubDomains');
   });
 
+  it('uses custom HSTS max age when provided through securityMiddleware', () => {
+    const app = express();
+    app.use(securityMiddleware({ enableHttps: false, hstsMaxAge: 600 }));
+    app.get('/test', (req, res) => res.json({ ok: true }));
+
+    return request(app)
+      .get('/test')
+      .set('x-forwarded-proto', 'https')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=600; includeSubDomains');
+  });
+
   it('does not set HSTS for insecure requests', () => {
     const req = mockReq({ secure: false });
     const res = mockRes();

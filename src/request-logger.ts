@@ -29,10 +29,10 @@ export function requestLogger(options: RequestLoggerOptions = {}) {
       `[${timestamp}] ${req.method} ${req.originalUrl} - IP: ${req.ip || req.socket.remoteAddress}`
     );
 
-    if (logBody && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method) && req.body) {
+    if (logBody && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method) && req.body) {
       const logBody = { ...req.body };
       for (const field of sensitiveFields) {
-        if (logBody[field]) {
+        if (Object.prototype.hasOwnProperty.call(logBody, field)) {
           logBody[field] = '[REDACTED]';
         }
       }
