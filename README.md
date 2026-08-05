@@ -51,7 +51,7 @@ import { securityMiddleware } from 'express-production-middleware';
 
 app.use(securityMiddleware({
   allowedOrigins: ['https://yourdomain.com'],
-  enableHttps: true,     // Redirect HTTP to HTTPS in production
+  enableHttps: true,     // Reject HTTP in production
   enableHeaders: true,   // X-Content-Type-Options, HSTS, CSP, etc.
   enableCors: true,      // CORS with preflight cache
 }));
@@ -119,7 +119,7 @@ app.use(requestLogger({
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `allowedOrigins` | `string[]` | `['localhost:3000']` | CORS allowed origins |
+| `allowedOrigins` | `string[]` | `['http://localhost:3000']` | CORS allowed origins |
 | `enableHttps` | `boolean` | `true` | Enforce HTTPS in production |
 | `enableHeaders` | `boolean` | `true` | Set security headers |
 | `enableCors` | `boolean` | `true` | Enable CORS |
