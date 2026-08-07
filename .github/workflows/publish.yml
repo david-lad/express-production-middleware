@@ -27,6 +27,9 @@ jobs:
       - name: Run test suites
         run: npm test
 
+      - name: Build package
+        run: npm run build
+
       - name: Upgrade npm & Publish via OIDC
         # We upgrade the npm engine right here so Trusted Publishing has its OIDC handler
         run: |
